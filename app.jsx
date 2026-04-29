@@ -799,7 +799,9 @@ function App() {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const hero = document.getElementById("home");
+      const threshold = hero ? hero.offsetHeight * 0.5 : window.innerHeight * 0.5;
+      setScrolled(window.scrollY > threshold);
       const navBand = 80;
       const dark = document.querySelectorAll(".cf-section-dark");
       let hit = false;
