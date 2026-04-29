@@ -143,7 +143,7 @@ function Hero({ T, headline, variant }) {
         <div className="cf-hero-split-text">
           <div className="cf-eyebrow">{T.hero_kicker}</div>
           <h1 className="cf-hero-title">{headline.split(",").map((part, i) => (
-            <span key={i} className="cf-hero-line">{part}{i === 0 ? "," : ""}</span>
+            <span key={i} className="cf-hero-line"><span className="cf-hero-line-inner">{part}{i === 0 ? "," : ""}</span></span>
           ))}</h1>
           <p className="cf-hero-sub">{T.hero_sub}</p>
           <div className="cf-hero-ctas">
@@ -169,7 +169,7 @@ function Hero({ T, headline, variant }) {
         <div className="cf-eyebrow cf-eyebrow-light">{T.hero_kicker}</div>
         <h1 className="cf-hero-title">
           {headline.split(",").map((part, i, arr) => (
-            <span key={i} className="cf-hero-line">{part.trim()}{i < arr.length - 1 ? "," : ""}</span>
+            <span key={i} className="cf-hero-line"><span className="cf-hero-line-inner">{part.trim()}{i < arr.length - 1 ? "," : ""}</span></span>
           ))}
         </h1>
         <p className="cf-hero-sub">{T.hero_sub}</p>
