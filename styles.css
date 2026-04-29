@@ -116,7 +116,7 @@ input, textarea, select { font: inherit; color: inherit; }
 .cf-btn {
   display: inline-flex; align-items: center; gap: 10px;
   padding: 12px 20px;
-  border-radius: 999px;
+  border-radius: 6px;
   font-weight: 500;
   font-size: 14px;
   letter-spacing: -0.005em;
@@ -148,6 +148,9 @@ input, textarea, select { font: inherit; color: inherit; }
   color: var(--cf-ink);
   padding: 12px 0;
 }
+.cf-nav.is-over-dark { color: var(--cf-paper); }
+.cf-nav.is-over-dark .cf-btn-primary { background: var(--cf-paper); color: var(--cf-ink); }
+.cf-nav.is-over-dark .cf-btn-primary:hover { background: var(--cf-accent); color: var(--cf-paper); }
 .cf-nav-inner {
   max-width: 1280px; margin: 0 auto;
   padding: 0 clamp(20px, 4vw, 48px);
@@ -522,10 +525,13 @@ input, textarea, select { font: inherit; color: inherit; }
   background: transparent;
   border: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 .cf-serv-flip {
   position: relative;
   display: grid;
+  flex: 1;
   transition: transform .7s cubic-bezier(.2,.8,.2,1);
   transform-style: preserve-3d;
   min-height: 360px;
@@ -721,46 +727,128 @@ input, textarea, select { font: inherit; color: inherit; }
 .cf-port-foot { display: flex; justify-content: center; margin-top: var(--cf-s5); }
 
 /* ==== Testimonials ==== */
-.cf-test-stage {
-  position: relative;
-  max-width: 800px; margin: 0 auto;
-  min-height: 280px;
+.cf-test-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: var(--cf-s7);
+  align-items: start;
+  margin-top: var(--cf-s5);
 }
-.cf-test-card {
+
+.cf-test-quote-col {
+  display: flex; flex-direction: column;
+  gap: var(--cf-s4);
+}
+.cf-test-mark-xl { display: block; }
+
+.cf-test-quote-stage {
+  position: relative;
+  min-height: 320px;
+}
+.cf-test-quote-card {
   position: absolute; inset: 0;
   margin: 0; padding: 0;
-  display: flex; flex-direction: column;
-  align-items: center; text-align: center;
-  gap: 24px;
-  opacity: 0; transform: translateY(20px);
-  transition: opacity .6s ease, transform .6s ease;
+  opacity: 0; transform: translateY(12px);
+  transition: opacity .5s ease, transform .5s ease;
   pointer-events: none;
 }
-.cf-test-card.is-active { opacity: 1; transform: translateY(0); pointer-events: auto; }
-.cf-test-mark { display: block; }
-.cf-test-quote {
+.cf-test-quote-card.is-active {
+  opacity: 1; transform: translateY(0);
+  pointer-events: auto;
+}
+.cf-test-quote-xl {
   font-family: var(--cf-heading);
-  font-size: clamp(20px, 2.4vw, 28px);
-  line-height: 1.4;
-  letter-spacing: -0.01em;
+  font-size: clamp(28px, 3.6vw, 48px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   font-weight: 400;
   color: var(--cf-paper);
-  max-width: 32ch;
+  max-width: 22ch;
   margin: 0;
   text-wrap: balance;
 }
-.cf-test-cite { display: flex; flex-direction: column; gap: 4px; }
-.cf-test-name { font-family: var(--cf-heading); font-weight: 500; }
-.cf-test-role { font-family: var(--cf-mono); font-size: 11px; letter-spacing: 0.1em; opacity: 0.55; text-transform: uppercase; }
-.cf-test-dots {
-  display: flex; gap: 8px; justify-content: center; margin-top: var(--cf-s5);
+
+.cf-test-list {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex; flex-direction: column;
+  border-top: 1px solid rgba(255,255,255,0.1);
 }
-.cf-test-dots button {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(255,255,255,0.25);
-  transition: background .25s, transform .25s;
+.cf-test-list li { margin: 0; }
+.cf-test-list-item {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: baseline;
+  padding: 20px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  text-align: left;
+  cursor: pointer;
+  color: var(--cf-paper);
+  transition: opacity .25s, padding-left .25s;
+  opacity: 0.5;
 }
-.cf-test-dots button.is-active { background: var(--cf-accent); transform: scale(1.3); }
+.cf-test-list-item:hover { opacity: 0.8; }
+.cf-test-list-item.is-active { opacity: 1; padding-left: 16px; }
+
+.cf-test-list-num {
+  font-family: var(--cf-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--cf-accent);
+  line-height: 1;
+}
+.cf-test-list-body {
+  display: flex; flex-direction: column;
+  gap: 4px;
+}
+.cf-test-list-name {
+  font-family: var(--cf-heading);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+.cf-test-list-role {
+  font-family: var(--cf-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+.cf-test-list-bar {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--cf-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform .35s ease;
+}
+.cf-test-list-item.is-active .cf-test-list-bar { transform: scaleY(1); }
+
+.cf-test-list-wrap { display: flex; flex-direction: column; }
+.cf-test-more {
+  display: flex; flex-wrap: wrap;
+  align-items: baseline; justify-content: space-between;
+  gap: 12px;
+  padding: 18px 0 0;
+  font-family: var(--cf-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.cf-test-more-count { color: rgba(255,255,255,0.55); }
+.cf-test-more-link {
+  color: var(--cf-paper);
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  padding-bottom: 2px;
+  transition: color .2s, border-color .2s;
+}
+.cf-test-more-link:hover { color: var(--cf-accent); border-color: var(--cf-accent); }
 
 /* ==== About ==== */
 .cf-about-grid {
@@ -1038,6 +1126,8 @@ input, textarea, select { font: inherit; color: inherit; }
   .cf-about-grid { grid-template-columns: 1fr; }
   .cf-contact-grid { grid-template-columns: 1fr; }
   .cf-foot-top { grid-template-columns: 1fr 1fr; }
+  .cf-test-split { grid-template-columns: 1fr; gap: var(--cf-s5); }
+  .cf-test-quote-stage { min-height: 220px; }
 }
 
 @media (max-width: 600px) {
@@ -1056,6 +1146,8 @@ input, textarea, select { font: inherit; color: inherit; }
   .cf-foot-top { grid-template-columns: 1fr; }
   .cf-foot-bot { flex-direction: column; gap: 6px; }
   .cf-tw { left: 16px; right: 16px; width: auto; bottom: 16px; }
+  .cf-test-mark-xl { width: 56px; height: 44px; }
+  .cf-test-quote-stage { min-height: 260px; }
 }
 
 /* Reduced motion */

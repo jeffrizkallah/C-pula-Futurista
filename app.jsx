@@ -70,12 +70,12 @@ function Logo({ light = false, mark = false }) {
 }
 
 // ----- Nav -----
-function Nav({ T, lang, setLang, scrolled }) {
+function Nav({ T, lang, setLang, scrolled, overDark }) {
   const [open, setOpen] = useState(false);
   return (
-    <header className={`cf-nav ${scrolled ? "is-scrolled" : ""}`} role="banner">
+    <header className={`cf-nav ${scrolled ? "is-scrolled" : ""} ${overDark ? "is-over-dark" : ""}`} role="banner">
       <div className="cf-nav-inner">
-        <Logo light={!scrolled} />
+        <Logo light={!scrolled || overDark} />
 
         <nav className="cf-nav-links" aria-label="Primary">
           {[
@@ -281,34 +281,38 @@ function ServiceCard({ s, T }) {
 function ServiceIcon({ kind }) {
   const stroke = "var(--cf-ink)";
   if (kind === "renovation") {
+    // Paint roller: roller cylinder, yoke, handle, with a wet-paint accent stripe above
     return (
       <svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true">
-        <path d="M 10 50 L 10 30 L 32 14 L 54 30 L 54 50 Z" fill="none" stroke={stroke} strokeWidth="1.4" />
-        <path d="M 24 50 L 24 38 L 40 38 L 40 50" fill="none" stroke={stroke} strokeWidth="1.4" />
-        <path d="M 44 18 L 50 24" stroke="var(--cf-accent)" strokeWidth="1.4" />
-        <circle cx="42" cy="20" r="2" fill="var(--cf-accent)" />
+        <rect x="8" y="8" width="48" height="3" fill="var(--cf-accent)" />
+        <rect x="10" y="14" width="44" height="9" rx="1" fill="none" stroke={stroke} strokeWidth="1.4" />
+        <path d="M 50 23 L 50 30 L 32 30 L 32 36" fill="none" stroke={stroke} strokeWidth="1.4" strokeLinejoin="round" />
+        <rect x="28" y="36" width="8" height="18" rx="1" fill="none" stroke={stroke} strokeWidth="1.4" />
       </svg>
     );
   }
   if (kind === "construction") {
+    // Blueprint sheet: page outline with folded corner, subtle grid, accent floor plan
     return (
       <svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true">
-        <rect x="14" y="16" width="36" height="38" fill="none" stroke={stroke} strokeWidth="1.4" />
-        <line x1="14" y1="28" x2="50" y2="28" stroke={stroke} strokeWidth="1" />
-        <line x1="14" y1="40" x2="50" y2="40" stroke={stroke} strokeWidth="1" />
-        <line x1="32" y1="16" x2="32" y2="54" stroke={stroke} strokeWidth="1" />
-        <path d="M 8 16 L 32 6 L 56 16" fill="none" stroke="var(--cf-accent)" strokeWidth="1.4" />
+        <path d="M 12 8 L 44 8 L 54 18 L 54 56 L 12 56 Z" fill="none" stroke={stroke} strokeWidth="1.4" strokeLinejoin="round" />
+        <path d="M 44 8 L 44 18 L 54 18" fill="none" stroke={stroke} strokeWidth="1.4" strokeLinejoin="round" />
+        <line x1="12" y1="26" x2="54" y2="26" stroke={stroke} strokeWidth="0.7" />
+        <line x1="12" y1="36" x2="54" y2="36" stroke="var(--cf-accent)" strokeWidth="1.4" />
+        <line x1="12" y1="46" x2="54" y2="46" stroke={stroke} strokeWidth="0.7" />
+        <line x1="22" y1="18" x2="22" y2="56" stroke={stroke} strokeWidth="0.7" />
+        <line x1="33" y1="18" x2="33" y2="56" stroke="var(--cf-accent)" strokeWidth="1.4" />
+        <line x1="44" y1="18" x2="44" y2="56" stroke={stroke} strokeWidth="0.7" />
       </svg>
     );
   }
+  // Maintenance: toolbox — arched handle, body, lid line, accent latch
   return (
     <svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true">
-      <circle cx="32" cy="32" r="18" fill="none" stroke={stroke} strokeWidth="1.4" />
-      <circle cx="32" cy="32" r="6" fill="none" stroke={stroke} strokeWidth="1" />
-      <line x1="32" y1="14" x2="32" y2="20" stroke="var(--cf-accent)" strokeWidth="1.4" />
-      <line x1="32" y1="44" x2="32" y2="50" stroke="var(--cf-accent)" strokeWidth="1.4" />
-      <line x1="14" y1="32" x2="20" y2="32" stroke="var(--cf-accent)" strokeWidth="1.4" />
-      <line x1="44" y1="32" x2="50" y2="32" stroke="var(--cf-accent)" strokeWidth="1.4" />
+      <path d="M 22 22 L 22 16 Q 22 12 26 12 L 38 12 Q 42 12 42 16 L 42 22" fill="none" stroke={stroke} strokeWidth="1.4" strokeLinejoin="round" />
+      <rect x="8" y="22" width="48" height="34" fill="none" stroke={stroke} strokeWidth="1.4" />
+      <line x1="8" y1="32" x2="56" y2="32" stroke={stroke} strokeWidth="1" />
+      <rect x="28" y="29" width="8" height="3" fill="var(--cf-accent)" />
     </svg>
   );
 }
@@ -415,6 +419,8 @@ function Testimonials({ T }) {
     { q: T.test_1_quote, n: T.test_1_name, r: T.test_1_role },
     { q: T.test_2_quote, n: T.test_2_name, r: T.test_2_role },
     { q: T.test_3_quote, n: T.test_3_name, r: T.test_3_role },
+    { q: T.test_4_quote, n: T.test_4_name, r: T.test_4_role },
+    { q: T.test_5_quote, n: T.test_5_name, r: T.test_5_role },
   ];
   const [idx, setIdx] = useState(0);
   useEffect(() => {
@@ -425,30 +431,57 @@ function Testimonials({ T }) {
   return (
     <section className="cf-section cf-section-dark" data-screen-label="07 Testimonials">
       <div className="cf-container">
-        <header className="cf-section-head cf-section-head-center">
+        <header className="cf-section-head">
           <div className="cf-eyebrow cf-eyebrow-light">{T.test_eyebrow}</div>
           <h2 className="cf-h2 cf-h2-light" style={{ whiteSpace: "pre-line" }}>{T.test_title}</h2>
         </header>
 
-        <div className="cf-test-stage">
-          {quotes.map((q, i) => (
-            <blockquote key={i} className={`cf-test-card ${i === idx ? "is-active" : ""}`}>
-              <svg className="cf-test-mark" viewBox="0 0 40 32" width="40" height="32" aria-hidden="true">
-                <path d="M 0 32 L 0 16 C 0 7 7 0 16 0 L 16 6 C 11 6 8 10 8 14 L 8 16 L 16 16 L 16 32 Z M 24 32 L 24 16 C 24 7 31 0 40 0 L 40 6 C 35 6 32 10 32 14 L 32 16 L 40 16 L 40 32 Z" fill="var(--cf-accent)" />
-              </svg>
-              <p className="cf-test-quote">{q.q}</p>
-              <footer className="cf-test-cite">
-                <div className="cf-test-name">{q.n}</div>
-                <div className="cf-test-role">{q.r}</div>
-              </footer>
-            </blockquote>
-          ))}
-        </div>
+        <div className="cf-test-split">
+          <div className="cf-test-quote-col">
+            <svg className="cf-test-mark-xl" viewBox="0 0 40 32" width="80" height="64" aria-hidden="true">
+              <path d="M 0 32 L 0 16 C 0 7 7 0 16 0 L 16 6 C 11 6 8 10 8 14 L 8 16 L 16 16 L 16 32 Z M 24 32 L 24 16 C 24 7 31 0 40 0 L 40 6 C 35 6 32 10 32 14 L 32 16 L 40 16 L 40 32 Z" fill="var(--cf-accent)" />
+            </svg>
+            <div className="cf-test-quote-stage">
+              {quotes.map((q, i) => (
+                <blockquote key={i} className={`cf-test-quote-card ${i === idx ? "is-active" : ""}`} aria-hidden={i !== idx}>
+                  <p className="cf-test-quote-xl">{q.q}</p>
+                </blockquote>
+              ))}
+            </div>
+          </div>
 
-        <div className="cf-test-dots" role="tablist">
-          {quotes.map((_, i) => (
-            <button key={i} className={i === idx ? "is-active" : ""} onClick={() => setIdx(i)} aria-label={`Testemunho ${i + 1}`} />
-          ))}
+          <div className="cf-test-list-wrap">
+            <ol className="cf-test-list" role="tablist">
+              {quotes.map((q, i) => (
+                <li key={i}>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={i === idx}
+                    className={`cf-test-list-item ${i === idx ? "is-active" : ""}`}
+                    onClick={() => setIdx(i)}
+                  >
+                    <span className="cf-test-list-num">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="cf-test-list-body">
+                      <span className="cf-test-list-name">{q.n}</span>
+                      <span className="cf-test-list-role">{q.r}</span>
+                    </span>
+                    <span className="cf-test-list-bar" aria-hidden="true" />
+                  </button>
+                </li>
+              ))}
+            </ol>
+            <div className="cf-test-more">
+              <span className="cf-test-more-count">{T.test_more}</span>
+              <a
+                href="#work"
+                onClick={(e) => { e.preventDefault(); smoothScrollTo("work"); }}
+                className="cf-test-more-link"
+              >
+                {T.test_more_link} <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -553,11 +586,11 @@ function Contact({ T, lang }) {
             <ul className="cf-contact-info">
               <li>
                 <span className="cf-contact-info-l">{T.contact_phone_l}</span>
-                <a href="tel:+351912345678">+351 912 345 678</a>
+                <span>+351 912 345 678</span>
               </li>
               <li>
                 <span className="cf-contact-info-l">{T.contact_email_l}</span>
-                <a href="mailto:ola@cupulafuturista.pt">ola@cupulafuturista.pt</a>
+                <span>ola@cupulafuturista.pt</span>
               </li>
               <li>
                 <span className="cf-contact-info-l">{T.contact_loc_l}</span>
@@ -762,11 +795,27 @@ function App() {
   const [tweaks, setTweaks] = useTweaks(TWEAK_DEFAULTS);
   const [lang, setLang] = useState(tweaks.lang || "pt");
   const [scrolled, setScrolled] = useState(false);
+  const [overDark, setOverDark] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 50);
+      const navBand = 80;
+      const dark = document.querySelectorAll(".cf-section-dark");
+      let hit = false;
+      dark.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top <= navBand && r.bottom >= 0) hit = true;
+      });
+      setOverDark(hit);
+    };
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -790,7 +839,7 @@ function App() {
 
   return (
     <div id="top">
-      <Nav T={T} lang={lang} setLang={setLang} scrolled={scrolled} />
+      <Nav T={T} lang={lang} setLang={setLang} scrolled={scrolled} overDark={overDark} />
       <Hero T={T} headline={headline} variant={tweaks.heroVariant} />
       <Strip T={T} />
       {tweaks.showAnim && <ScrollAnimSection variant={tweaks.animVariant} T={T} />}
